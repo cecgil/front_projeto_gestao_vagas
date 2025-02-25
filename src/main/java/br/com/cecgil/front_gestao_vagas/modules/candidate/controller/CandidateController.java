@@ -119,6 +119,12 @@ public class CandidateController {
         return "redirect:/candidate/jobs";
     }
 
+
+    @GetMapping("/create")
+    public String create(){
+        return "candidate/create";
+    }
+
     
     
 }
