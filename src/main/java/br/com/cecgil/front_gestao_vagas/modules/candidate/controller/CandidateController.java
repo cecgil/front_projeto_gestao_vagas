@@ -22,6 +22,7 @@ import br.com.cecgil.front_gestao_vagas.modules.candidate.service.CandidateServi
 import br.com.cecgil.front_gestao_vagas.modules.candidate.service.CreateCandidateService;
 import br.com.cecgil.front_gestao_vagas.modules.candidate.service.FindJobService;
 import br.com.cecgil.front_gestao_vagas.modules.candidate.service.ProfileCandidateService;
+import br.com.cecgil.front_gestao_vagas.utils.FormatErrorMessage;
 import jakarta.servlet.http.HttpSession;
 
 import org.springframework.web.bind.annotation.GetMapping;

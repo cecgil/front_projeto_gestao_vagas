@@ -28,5 +28,6 @@ public class FormatErrorMessage {
             formattedMessager.append("- ").append(node.get("message").asText()).append("\n");
         }
         return formattedMessager.toString();
+    }
     
 }
