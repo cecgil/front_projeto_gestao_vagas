@@ -1,5 +1,8 @@
 package br.com.cecgil.front_gestao_vagas.modules.company.service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -7,27 +10,34 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import br.com.cecgil.front_gestao_vagas.modules.DTO.CreateCompanyDTO;
+import br.com.cecgil.front_gestao_vagas.modules.DTO.Token;
 
 @Service
-public class CreateCompanyService {
+public class LoginCompanyService {
 
     @Value("${host.api.gestao.vagas}")
     private String hostAPIGestaoVagas;
-
-     public String execute(CreateCompanyDTO createCompanyDTO) {
-        
+    
+    public Token execute(String username, String password){
         RestTemplate rt = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        HttpEntity<CreateCompanyDTO> request = new HttpEntity<>(createCompanyDTO ,headers);
+        Map<String, String> data = new HashMap<>();
+        data.put("username", username);
+        data.put("password", password);
 
-        var url = hostAPIGestaoVagas.concat("/company/");
+        HttpEntity<Map<String, String>> request = new HttpEntity<>(data, headers);
 
-        return rt.postForObject(url, request, String.class);
-            
+        var url = hostAPIGestaoVagas.concat("/company/auth");
+
+        var result = rt.postForObject(url, request, Token.class);
+
+        System.out.println(result);
+
+        return result;
     }
+
     
 }

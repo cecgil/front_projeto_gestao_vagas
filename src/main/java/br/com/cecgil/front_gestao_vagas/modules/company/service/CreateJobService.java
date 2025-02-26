@@ -7,27 +7,30 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import br.com.cecgil.front_gestao_vagas.modules.DTO.CreateCompanyDTO;
+import br.com.cecgil.front_gestao_vagas.modules.DTO.CreateJobsDTO;
 
 @Service
-public class CreateCompanyService {
+public class CreateJobService {
 
     @Value("${host.api.gestao.vagas}")
     private String hostAPIGestaoVagas;
-
-     public String execute(CreateCompanyDTO createCompanyDTO) {
-        
+    
+    public String execute(CreateJobsDTO jobs, String token){
         RestTemplate rt = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(token);
+    
+        HttpEntity<CreateJobsDTO> request = new HttpEntity<>(jobs, headers);
 
-        HttpEntity<CreateCompanyDTO> request = new HttpEntity<>(createCompanyDTO ,headers);
-
-        var url = hostAPIGestaoVagas.concat("/company/");
-
-        return rt.postForObject(url, request, String.class);
-            
+        var url = hostAPIGestaoVagas.concat("/company/job/");
+    
+        var result = rt.postForObject(url, request, String.class);
+    
+        System.out.println(result);
+    
+        return result;
     }
     
 }
