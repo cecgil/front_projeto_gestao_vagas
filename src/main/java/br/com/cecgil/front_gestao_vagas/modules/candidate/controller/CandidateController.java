@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import br.com.cecgil.front_gestao_vagas.modules.DTO.CreateCandidateDTO;
 import br.com.cecgil.front_gestao_vagas.modules.candidate.service.ApplyJobService;
 import br.com.cecgil.front_gestao_vagas.modules.candidate.service.CandidateService;
+import br.com.cecgil.front_gestao_vagas.modules.candidate.service.CreateCandidateService;
 import br.com.cecgil.front_gestao_vagas.modules.candidate.service.FindJobService;
 import br.com.cecgil.front_gestao_vagas.modules.candidate.service.ProfileCandidateService;
 import jakarta.servlet.http.HttpSession;
@@ -42,7 +44,10 @@ public class CandidateController {
 
     @Autowired
     private ApplyJobService applyJobService;
-    
+
+    @Autowired
+    private CreateCandidateService createCandidateService;
+
     @GetMapping("/login")
     public String login(){
         return "candidate/login";
@@ -121,9 +126,24 @@ public class CandidateController {
 
 
     @GetMapping("/create")
-    public String create(){
+    public String create(Model model){
+        model.addAttribute("candidate", new CreateCandidateDTO());
         return "candidate/create";
     }
+
+    @PostMapping("/create")
+    public String save(CreateCandidateDTO candidate, Model model){
+        try{
+            this.createCandidateService.execute(candidate);
+            
+        }catch(HttpClientErrorException ex){
+            model.addAttribute("error_message", FormatErrorMessage.formatErrorMessage(ex.getResponseBodyAsString()));
+        }    
+        model.addAttribute("candidate", candidate);
+        return "candidate/create";
+    }
+
+    
 
     
     
